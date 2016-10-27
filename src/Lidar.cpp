@@ -7,7 +7,7 @@
 
 #include <Lidar.h>
 
-Lidar::Lidar(uint32_t lidarPort, int mode = 0):
+Lidar::Lidar(uint32_t lidarPort, int mode):
     m_mode(mode),
     m_distance(0),
     m_fastAverage(0),

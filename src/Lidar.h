@@ -11,6 +11,8 @@
 #define MODE_I2C 0
 #define MODE_PWM 1
 
+#include <cstdint>
+
 class Lidar
 {
     int m_mode;
@@ -21,7 +23,8 @@ class Lidar
     double m_slowAverage;
 
     public:
-        Lidar(uint32_t lidarPort, int mode = 0);
+        // Make sure to pass in 0 to mode
+        Lidar(uint32_t lidarPort, int mode);
         void run();
         double getDistance();
         double getFastAverage();
