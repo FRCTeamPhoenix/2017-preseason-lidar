@@ -14,7 +14,7 @@ Lidar::Lidar(uint32_t lidarPort, int mode):
     m_slowAverage(0)
 {
     // TODO Auto-generated constructor stub
-
+    m_I2C = new I2C(I2C::kOnboard, LIDARLite_ADDRESS);
 }
 
 Lidar::~Lidar()
