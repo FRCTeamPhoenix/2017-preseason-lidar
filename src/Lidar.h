@@ -15,8 +15,11 @@
 #define    MeasureValue        0x04          // Value to initiate ranging.
 #define RegisterHighLowB 0x8f // Register to get both High and Low bytes in 1 call.
 
+typedef unsigned char byte;
+
 #include <cstdint>
 #include "WPILib.h"
+#include <sstream>
 
 class Lidar
 {

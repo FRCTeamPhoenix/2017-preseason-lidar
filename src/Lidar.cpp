@@ -17,6 +17,24 @@ Lidar::Lidar(uint32_t lidarPort, int mode):
     m_I2C = new I2C(I2C::kOnboard, LIDARLite_ADDRESS);
 }
 
+void Lidar::run() {
+    byte nackack = 100;
+    while (nackack != 0) {
+        nackack = m_I2C -> Write(RegisterMeasure, MeasureValue);
+        Wait(0.001);
+    }
+    byte distanceArray[2];
+    nackack = 100;
+    while (nackack != 0) {
+        nackack = m_I2C -> Read(RegisterHighLowB, 2, distanceArray);
+        Wait(0.001);
+    }
+    std::ostringstream ss;
+    int distance = (distanceArray[0] << 8) + distanceArray[1];
+    ss << distance;
+    SmartDashboard::PutString("DB/String 1",ss.str());
+}
+
 Lidar::~Lidar()
 {
     // TODO Auto-generated destructor stub
