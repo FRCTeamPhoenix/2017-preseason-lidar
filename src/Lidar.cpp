@@ -37,6 +37,6 @@ void Lidar::run() {
 
 Lidar::~Lidar()
 {
-    // TODO Auto-generated destructor stub
+    delete m_I2C;
 }
 
