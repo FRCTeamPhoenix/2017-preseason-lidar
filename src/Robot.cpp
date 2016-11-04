@@ -1,4 +1,5 @@
 #include "WPILib.h"
+#include "Lidar.h"
 
 /**
  * This is a demo program showing how to use Mecanum control with the RobotDrive class.
@@ -16,17 +17,20 @@ class Robot: public SampleRobot
 
 	RobotDrive robotDrive;	// robot drive system
 	Joystick stick;			// only joystick
+	Lidar lidar;
 
 public:
 	Robot() :
 			robotDrive(frontLeftChannel, rearLeftChannel,
 					   frontRightChannel, rearRightChannel),	// these must be initialized in the same order
-			stick(joystickChannel)								// as they are declared above.
+			stick(joystickChannel),								// as they are declared above.
+			lidar(0, 0, 1)
 	{
 		robotDrive.SetExpiration(0.1);
 		robotDrive.SetInvertedMotor(RobotDrive::kFrontLeftMotor, true);	// invert the left side motors
 		robotDrive.SetInvertedMotor(RobotDrive::kRearLeftMotor, true);	// you may need to change or remove this to match your robot
 	}
+
 
 	/**
 	 * Runs the motors with Mecanum drive.
@@ -42,6 +46,13 @@ public:
 
 			Wait(0.005); // wait 5ms to avoid hogging CPU cycles
 		}
+	}
+	void Test()
+	{
+	    while (IsTest() && IsEnabled())
+	    {
+	        lidar.run();
+	    }
 	}
 
 };

@@ -32,9 +32,13 @@ class Lidar
 
     I2C *m_I2C;
 
+    Relay * m_onSwitch;
+
+    Counter m_counter;
+
     public:
         // Make sure to pass in 0 to mode
-        Lidar(uint32_t lidarPort, int mode);
+        Lidar(uint32_t lidarPort, Relay * onSwitch, int mode);
         void run();
         double getDistance();
         double getFastAverage();
