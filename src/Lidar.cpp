@@ -19,6 +19,14 @@ m_slowAverage(0)
     m_counter.SetSemiPeriodMode(true);
 }
 
+double Lidar::getFastAverage() {
+   return m_fastAverage;
+}
+
+double Lidar::getSlowAverage() {
+   return m_slowAverage;
+}
+
 void Lidar::run() {
     if (m_mode == 0) {
         byte nackack = 100;
@@ -40,9 +48,10 @@ void Lidar::run() {
 
     if (m_mode == 1) {
         m_distance = m_counter.GetPeriod() * 39370.0787;
-        std::ostringstream ss;
-        ss << m_distance;
-        SmartDashboard::PutString("DB/String 1",ss.str());
+        double fast = 5.0;
+        m_fastAverage = (fast * m_fastAverage + m_distance) / (fast + 1.0);
+        double slow = 25.0;
+        m_slowAverage = (slow * m_slowAverage + m_distance) / (slow + 1.0);
     }
 }
 

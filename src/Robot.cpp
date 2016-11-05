@@ -52,6 +52,9 @@ public:
 	    while (IsTest() && IsEnabled())
 	    {
 	        lidar.run();
+	        std::ostringstream ss;
+	        ss << lidar.getSlowAverage();
+	        SmartDashboard::PutString("DB/String 1",ss.str());
 	    }
 	}
 
