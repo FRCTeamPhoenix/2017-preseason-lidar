@@ -1,5 +1,10 @@
 #include "WPILib.h"
 #include "Lidar.h"
+#include <thread>
+
+class Robot;
+
+void lidarThread(Robot * robot, Lidar * threadLidar);
 
 /**
  * This is a demo program showing how to use Mecanum control with the RobotDrive class.
@@ -24,7 +29,7 @@ public:
 			robotDrive(frontLeftChannel, rearLeftChannel,
 					   frontRightChannel, rearRightChannel),	// these must be initialized in the same order
 			stick(joystickChannel),								// as they are declared above.
-			lidar(0, 0, 1)
+			lidar(8, 9, 0)
 	{
 		robotDrive.SetExpiration(0.1);
 		robotDrive.SetInvertedMotor(RobotDrive::kFrontLeftMotor, true);	// invert the left side motors
@@ -49,15 +54,30 @@ public:
 	}
 	void Test()
 	{
+        std::thread lidarRun(lidarThread, this, &lidar);
+        lidarRun.detach();
 	    while (IsTest() && IsEnabled())
 	    {
-	        lidar.run();
-	        std::ostringstream ss;
-	        ss << lidar.getSlowAverage();
-	        SmartDashboard::PutString("DB/String 1",ss.str());
+
 	    }
+	    lidarRun.join();
 	}
 
 };
+
+void lidarThread(Robot * robot, Lidar * threadLidar) {
+   while(true) {
+      threadLidar->run();
+      std::ostringstream ss;
+      ss << threadLidar->getFastAverage();
+      SmartDashboard::PutString("DB/String 0",ss.str());
+      ss.str("");
+      ss << threadLidar->m_counter;
+      SmartDashboard::PutString("DB/String 1",ss.str());
+      ss.str("");
+      ss << "status:" << (int)threadLidar->m_status;
+      SmartDashboard::PutString("DB/String 4",ss.str());
+   }
+}
 
 START_ROBOT_CLASS(Robot)

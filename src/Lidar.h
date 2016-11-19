@@ -12,8 +12,10 @@
 #define MODE_PWM 1
 #define    LIDARLite_ADDRESS   0x62          // Default I2C Address of LIDAR-Lite.
 #define    RegisterMeasure     0x00          // Register to write to initiate ranging.
-#define    MeasureValue        0x04          // Value to initiate ranging.
-#define RegisterHighLowB 0x8f // Register to get both High and Low bytes in 1 call.
+#define    MeasureValue        0x03          // Value to initiate ranging.
+#define    HighByte            0x18          // Distance measurement high byte
+#define    LowByte             0x19          // Distance measurement low byte
+
 
 typedef unsigned char byte;
 
@@ -32,18 +34,20 @@ class Lidar
 
     I2C *m_I2C;
 
-    Relay * m_onSwitch;
+    Counter m_monitorPin;
 
-    Counter m_counter;
+    DigitalOutput m_triggerPin;
 
     public:
         // Make sure to pass in 0 to mode
-        Lidar(uint32_t lidarPort, Relay * onSwitch, int mode);
+        Lidar(uint32_t triggerPin, uint32_t monitorPin, int mode);
         void run();
         double getDistance();
         double getFastAverage();
         double getSlowAverage();
         virtual ~Lidar();
+        byte m_status;
+        int m_counter;
 };
 
 #endif /* SRC_LIDAR_H_ */
