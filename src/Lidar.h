@@ -32,6 +32,8 @@ class Lidar
     double m_fastAverage;
     double m_slowAverage;
 
+    byte m_status;
+
     I2C *m_I2C;
 
     Counter m_monitorPin;
@@ -46,8 +48,7 @@ class Lidar
         double getFastAverage();
         double getSlowAverage();
         virtual ~Lidar();
-        byte m_status;
-        int m_counter;
+        int getStatus();
 };
 
 #endif /* SRC_LIDAR_H_ */

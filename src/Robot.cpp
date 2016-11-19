@@ -71,12 +71,6 @@ void lidarThread(Robot * robot, Lidar * threadLidar) {
       std::ostringstream ss;
       ss << threadLidar->getFastAverage();
       SmartDashboard::PutString("DB/String 0",ss.str());
-      ss.str("");
-      ss << threadLidar->m_counter;
-      SmartDashboard::PutString("DB/String 1",ss.str());
-      ss.str("");
-      ss << "status:" << (int)threadLidar->m_status;
-      SmartDashboard::PutString("DB/String 4",ss.str());
    }
 }
 
