@@ -1,6 +1,8 @@
 #include "WPILib.h"
 #include "Lidar.h"
 #include <thread>
+#include "plog/Log.h"
+#include "sys/stat.h"
 
 class Robot;
 
@@ -31,6 +33,8 @@ public:
 			stick(joystickChannel),								// as they are declared above.
 			lidar(8, 9, 0)
 	{
+	    plog::init(plog::debug, "/home/lvuser/robot_logger.txt");
+	    LOGD << "-------------------------New Run-------------------------";
 		robotDrive.SetExpiration(0.1);
 		robotDrive.SetInvertedMotor(RobotDrive::kFrontLeftMotor, true);	// invert the left side motors
 		robotDrive.SetInvertedMotor(RobotDrive::kRearLeftMotor, true);	// you may need to change or remove this to match your robot
@@ -56,6 +60,7 @@ public:
 	{
         std::thread lidarRun(lidarThread, this, &lidar);
         lidarRun.detach();
+
 	    while (IsTest() && IsEnabled())
 	    {
 
@@ -71,6 +76,7 @@ void lidarThread(Robot * robot, Lidar * threadLidar) {
       std::ostringstream ss;
       ss << threadLidar->getFastAverage();
       SmartDashboard::PutString("DB/String 0",ss.str());
+      //LOGD << " Distance: " << ss.str();
    }
 }
 
